@@ -36,147 +36,153 @@ PSI 允许多方在不泄露各自数据的情况下，计算出数据集的交�
 下方演示可以直接在网页上运行，尝试修改数据看看效果！
 :::
 
-<ClientOnly>
 <div id="psi-demo" style="padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; margin: 30px 0; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
-<h3 style="color: white; margin-top: 0; font-size: 24px;">🏥 医疗场景 PSI 演示</h3>
-<div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0;">
-<div style="margin-bottom: 20px;">
-<label style="display: block; font-weight: bold; margin-bottom: 8px; color: #667eea;">🏥 医院 A 的患者 ID（逗号分隔）：</label>
-<input type="text" id="hospital-a" value="1001,1002,1003,1005,1007" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #667eea; border-radius: 6px; box-sizing: border-box;" />
+  <h3 style="color: white; margin-top: 0; font-size: 24px;">🏥 医疗场景 PSI 演示</h3>
+  <div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0;">
+    <div style="margin-bottom: 20px;">
+      <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #667eea;">🏥 医院 A 的患者 ID（逗号分隔）：</label>
+      <input type="text" id="hospital-a" value="1001,1002,1003,1005,1007" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #667eea; border-radius: 6px; box-sizing: border-box;" />
+    </div>
+    <div style="margin-bottom: 20px;">
+      <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #764ba2;">🏥 医院 B 的患者 ID（逗号分隔）：</label>
+      <input type="text" id="hospital-b" value="1002,1003,1004,1006,1008" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #764ba2; border-radius: 6px; box-sizing: border-box;" />
+    </div>
+    <button onclick="runPSI()" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">🔒 计算隐私交集</button>
+  </div>
+  <div id="psi-result" style="display:none; background: white; padding: 20px; border-radius: 8px; margin-top: 15px; animation: fadeIn 0.5s;">
+    <h4 style="color: #667eea; margin-top: 0;">✅ PSI 计算完成</h4>
+    <div id="intersection-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #667eea; margin: 15px 0; border-radius: 4px;"></div>
+    <div id="count-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #764ba2; margin: 15px 0; border-radius: 4px;"></div>
+    <div style="padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; font-size: 14px;">
+      <strong>🔒 隐私保护说明：</strong><br />
+      • 医院 A 不知道医院 B 的完整患者列表<br />
+      • 医院 B 不知道医院 A 的完整患者列表<br />
+      • 双方只知道交集结果<br />
+      • 数据在加密状态下计算
+    </div>
+    <div id="hash-details" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px; font-size: 12px; font-family: monospace;">
+      <strong>🔐 加密过程（SHA-256 哈希）：</strong>
+      <div id="hash-content" style="margin-top: 10px; max-height: 200px; overflow-y: auto;"></div>
+    </div>
+  </div>
 </div>
-<div style="margin-bottom: 20px;">
-<label style="display: block; font-weight: bold; margin-bottom: 8px; color: #764ba2;">🏥 医院 B 的患者 ID（逗号分隔）：</label>
-<input type="text" id="hospital-b" value="1002,1003,1004,1006,1008" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #764ba2; border-radius: 6px; box-sizing: border-box;" />
-</div>
-<button onclick="runPSI()" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">🔒 计算隐私交集</button>
-</div>
-<div id="psi-result" style="display:none; background: white; padding: 20px; border-radius: 8px; margin-top: 15px; animation: fadeIn 0.5s;">
-<h4 style="color: #667eea; margin-top: 0;">✅ PSI 计算完成</h4>
-<div id="intersection-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #667eea; margin: 15px 0; border-radius: 4px;"></div>
-<div id="count-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #764ba2; margin: 15px 0; border-radius: 4px;"></div>
-<div style="padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; font-size: 14px;">
-<strong>🔒 隐私保护说明：</strong><br />
-• 医院 A 不知道医院 B 的完整患者列表<br />
-• 医院 B 不知道医院 A 的完整患者列表<br />
-• 双方只知道交集结果<br />
-• 数据在加密状态下计算
-</div>
-<div id="hash-details" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px; font-size: 12px; font-family: monospace;">
-<strong>🔐 加密过程（SHA-256 哈希）：</strong>
-<div id="hash-content" style="margin-top: 10px; max-height: 200px; overflow-y: auto;"></div>
-</div>
-</div>
-</div>
+
 <script>
 // SHA-256 哈希函数
 async function sha256(message) {
-const msgBuffer = new TextEncoder().encode(message);
-const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-const hashArray = Array.from(new Uint8Array(hashBuffer));
-return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
+
 // 运行 PSI
 async function runPSI() {
-const button = event.target;
-button.textContent = '⏳ 计算中...';
-button.disabled = true;
-// 获取输入
-const hospitalAInput = document.getElementById('hospital-a').value;
-const hospitalBInput = document.getElementById('hospital-b').value;
-const hospitalA = hospitalAInput.split(',').map(x => x.trim()).filter(x => x);
-const hospitalB = hospitalBInput.split(',').map(x => x.trim()).filter(x => x);
-// 模拟加密过程（显示哈希）
-const hashedA = await Promise.all(hospitalA.map(id => sha256(id)));
-const hashedB = await Promise.all(hospitalB.map(id => sha256(id)));
-// 计算交集
-const intersection = [];
-const hashMap = new Map();
-for (let i = 0; i < hospitalA.length; i++) {
-hashMap.set(hashedA[i], hospitalA[i]);
+  const button = event.target;
+  button.textContent = '⏳ 计算中...';
+  button.disabled = true;
+  
+  // 获取输入
+  const hospitalAInput = document.getElementById('hospital-a').value;
+  const hospitalBInput = document.getElementById('hospital-b').value;
+  const hospitalA = hospitalAInput.split(',').map(x => x.trim()).filter(x => x);
+  const hospitalB = hospitalBInput.split(',').map(x => x.trim()).filter(x => x);
+  
+  // 模拟加密过程（显示哈希）
+  const hashedA = await Promise.all(hospitalA.map(id => sha256(id)));
+  const hashedB = await Promise.all(hospitalB.map(id => sha256(id)));
+  
+  // 计算交集
+  const intersection = [];
+  const hashMap = new Map();
+  for (let i = 0; i < hospitalA.length; i++) {
+    hashMap.set(hashedA[i], hospitalA[i]);
+  }
+  for (let i = 0; i < hospitalB.length; i++) {
+    if (hashMap.has(hashedB[i])) {
+      intersection.push(hospitalB[i]);
+    }
+  }
+  
+  // 显示结果
+  document.getElementById('intersection-result').innerHTML = 
+    `<strong style="color: #667eea;">共同患者 ID：</strong><span style="font-size: 20px; font-weight: bold; color: #764ba2;">[${intersection.join(', ')}]</span>`;
+  document.getElementById('count-result').innerHTML = 
+    `<strong style="color: #764ba2;">共同患者数量：</strong><span style="font-size: 20px; font-weight: bold; color: #667eea;">${intersection.length}</span>`;
+  
+  // 显示加密细节
+  let hashDetails = '<div style="color: #667eea;"><strong>医院 A 的哈希：</strong></div>';
+  hospitalA.slice(0, 3).forEach((id, i) => {
+    hashDetails += `<div style="margin: 5px 0;">${id} → ${hashedA[i].substring(0, 16)}...</div>`;
+  });
+  hashDetails += '<div style="color: #764ba2; margin-top: 10px;"><strong>医院 B 的哈希：</strong></div>';
+  hospitalB.slice(0, 3).forEach((id, i) => {
+    hashDetails += `<div style="margin: 5px 0;">${id} → ${hashedB[i].substring(0, 16)}...</div>`;
+  });
+  document.getElementById('hash-content').innerHTML = hashDetails;
+  document.getElementById('psi-result').style.display = 'block';
+  
+  // 恢复按钮
+  button.textContent = '🔒 计算隐私交集';
+  button.disabled = false;
 }
-for (let i = 0; i < hospitalB.length; i++) {
-if (hashMap.has(hashedB[i])) {
-intersection.push(hospitalB[i]);
-}
-}
-// 显示结果
-document.getElementById('intersection-result').innerHTML = 
-`<strong style="color: #667eea;">共同患者 ID：</strong><span style="font-size: 20px; font-weight: bold; color: #764ba2;">[${intersection.join(', ')}]</span>`;
-document.getElementById('count-result').innerHTML = 
-`<strong style="color: #764ba2;">共同患者数量：</strong><span style="font-size: 20px; font-weight: bold; color: #667eea;">${intersection.length}</span>`;
-// 显示加密细节
-let hashDetails = '<div style="color: #667eea;"><strong>医院 A 的哈希：</strong></div>';
-hospitalA.slice(0, 3).forEach((id, i) => {
-hashDetails += `<div style="margin: 5px 0;">${id} → ${hashedA[i].substring(0, 16)}...</div>`;
-});
-hashDetails += '<div style="color: #764ba2; margin-top: 10px;"><strong>医院 B 的哈希：</strong></div>';
-hospitalB.slice(0, 3).forEach((id, i) => {
-hashDetails += `<div style="margin: 5px 0;">${id} → ${hashedB[i].substring(0, 16)}...</div>`;
-});
-document.getElementById('hash-content').innerHTML = hashDetails;
-document.getElementById('psi-result').style.display = 'block';
-// 恢复按钮
-button.textContent = '🔒 计算隐私交集';
-button.disabled = false;
-}
+
 // 按钮悬停效果
 if (typeof window !== 'undefined') {
-document.addEventListener('DOMContentLoaded', function() {
-const button = document.querySelector('#psi-demo button');
-if (button) {
-button.addEventListener('mouseover', function() {
-this.style.transform = 'translateY(-2px)';
-this.style.boxShadow = '0 5px 20px rgba(102, 126, 234, 0.4)';
-});
-button.addEventListener('mouseout', function() {
-this.style.transform = 'translateY(0)';
-this.style.boxShadow = 'none';
-});
-}
-});
+  document.addEventListener('DOMContentLoaded', function() {
+    const button = document.querySelector('#psi-demo button');
+    if (button) {
+      button.addEventListener('mouseover', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 5px 20px rgba(102, 126, 234, 0.4)';
+      });
+      button.addEventListener('mouseout', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = 'none';
+      });
+    }
+  });
 }
 </script>
+
 <style>
 @keyframes fadeIn {
-from { opacity: 0; transform: translateY(-10px); }
-to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
-</ClientOnly>
 
 ## 📚 深入学习：真正的 SecretFlow PSI
 
 上方演示使用 Web Crypto API 实现了简化版 PSI，展示了核心原理。
 
-<ClientOnly>
 <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 16px; padding: 30px; margin: 40px 0; box-shadow: 0 10px 40px rgba(245, 87, 108, 0.3); position: relative; overflow: hidden;">
-<div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-<div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-<div style="position: relative; z-index: 1;">
-<h3 style="color: white; margin-top: 0; font-size: 24px; text-align: center; margin-bottom: 15px;">🚀 体验真实的 SecretFlow PSI</h3>
-<p style="color: rgba(255,255,255,0.95); text-align: center; font-size: 16px; margin-bottom: 25px; line-height: 1.6;">在 Google Colab 中运行完整的 SecretFlow 代码<br />包含 ECDH-PSI 协议和 OT 实现</p>
-<div style="text-align: center;">
-<a href="https://colab.research.google.com/drive/18VPyyAQOlCIQkgvESY97wOYM23oPwLi6?usp=sharing" target="_blank" style="display: inline-block; background: white; color: #f5576c; padding: 15px 40px; border-radius: 50px; font-weight: bold; font-size: 18px; text-decoration: none; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: all 0.3s ease; border: 3px solid white;" onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';">
-📒 打开 Colab 笔记本 →
-</a>
+  <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+  <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+  <div style="position: relative; z-index: 1;">
+    <h3 style="color: white; margin-top: 0; font-size: 24px; text-align: center; margin-bottom: 15px;">🚀 体验真实的 SecretFlow PSI</h3>
+    <p style="color: rgba(255,255,255,0.95); text-align: center; font-size: 16px; margin-bottom: 25px; line-height: 1.6;">在 Google Colab 中运行完整的 SecretFlow 代码<br />包含 ECDH-PSI 协议和 OT 实现</p>
+    <div style="text-align: center;">
+      <a href="https://colab.research.google.com/drive/18VPyyAQOlCIQkgvESY97wOYM23oPwLi6?usp=sharing" target="_blank" style="display: inline-block; background: white; color: #f5576c; padding: 15px 40px; border-radius: 50px; font-weight: bold; font-size: 18px; text-decoration: none; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: all 0.3s ease; border: 3px solid white;" onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';">
+        📒 打开 Colab 笔记本 →
+      </a>
+    </div>
+    <div style="margin-top: 25px; display: flex; justify-content: space-around; flex-wrap: wrap;">
+      <div style="text-align: center; color: white; margin: 10px;">
+        <div style="font-size: 28px; font-weight: bold;">313</div>
+        <div style="font-size: 14px; opacity: 0.9;">行完整代码</div>
+      </div>
+      <div style="text-align: center; color: white; margin: 10px;">
+        <div style="font-size: 28px; font-weight: bold;">2</div>
+        <div style="font-size: 14px; opacity: 0.9;">种 PSI 算法</div>
+      </div>
+      <div style="text-align: center; color: white; margin: 10px;">
+        <div style="font-size: 28px; font-weight: bold;">0</div>
+        <div style="font-size: 14px; opacity: 0.9;">环境配置</div>
+      </div>
+    </div>
+  </div>
 </div>
-<div style="margin-top: 25px; display: flex; justify-content: space-around; flex-wrap: wrap;">
-<div style="text-align: center; color: white; margin: 10px;">
-<div style="font-size: 28px; font-weight: bold;">313</div>
-<div style="font-size: 14px; opacity: 0.9;">行完整代码</div>
-</div>
-<div style="text-align: center; color: white; margin: 10px;">
-<div style="font-size: 28px; font-weight: bold;">2</div>
-<div style="font-size: 14px; opacity: 0.9;">种 PSI 算法</div>
-</div>
-<div style="text-align: center; color: white; margin: 10px;">
-<div style="font-size: 28px; font-weight: bold;">0</div>
-<div style="font-size: 14px; opacity: 0.9;">环境配置</div>
-</div>
-</div>
-</div>
-</div>
-</ClientOnly>
 
 ::: warning 生产环境差异
 **简化版 vs 真正的 SecretFlow：**
