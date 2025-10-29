@@ -12,11 +12,43 @@ export default defineUserConfig({
   
   theme: defaultTheme({
     navbar: [
-      { text: '首页', link: '/' },
-      { text: '技术原理', link: '/tech/' },
-      { text: '场景交互', link: '/scenario/' },
+      { text: '隐语demo站', link: '/' },
       { text: '开发手记', link: '/devlog/' }
     ],
+    sidebar: {
+      '/': [
+        {
+          text: '隐语交互式拆解站',
+          collapsible: true,
+          children: [
+            {
+              text: '项目介绍',
+              link: '/'
+            },
+            {
+              text: 'PSI 技术原理',
+              link: '/tech/'
+            },
+            {
+              text: '场景交互',
+              link: '/scenario/'
+            }
+          ]
+        }
+      ],
+      '/devlog/': [
+        {
+          text: '开发手记',
+          collapsible: true,
+          children: [
+            {
+              text: '开发日志',
+              link: '/devlog/'
+            }
+          ]
+        }
+      ]
+    }
   }),
 })
 
