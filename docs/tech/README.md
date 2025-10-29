@@ -68,67 +68,67 @@ PSI 允许多方在不泄露各自数据的情况下，计算出数据集的交�
 </div>
 
 <script>
-// SHA-256 哈希函数
-async function sha256(message) {
-  const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-// 运行 PSI
-async function runPSI() {
-  const button = event.target;
-  button.textContent = '⏳ 计算中...';
-  button.disabled = true;
-  
-  // 获取输入
-  const hospitalAInput = document.getElementById('hospital-a').value;
-  const hospitalBInput = document.getElementById('hospital-b').value;
-  const hospitalA = hospitalAInput.split(',').map(x => x.trim()).filter(x => x);
-  const hospitalB = hospitalBInput.split(',').map(x => x.trim()).filter(x => x);
-  
-  // 模拟加密过程（显示哈希）
-  const hashedA = await Promise.all(hospitalA.map(id => sha256(id)));
-  const hashedB = await Promise.all(hospitalB.map(id => sha256(id)));
-  
-  // 计算交集
-  const intersection = [];
-  const hashMap = new Map();
-  for (let i = 0; i < hospitalA.length; i++) {
-    hashMap.set(hashedA[i], hospitalA[i]);
-  }
-  for (let i = 0; i < hospitalB.length; i++) {
-    if (hashMap.has(hashedB[i])) {
-      intersection.push(hospitalB[i]);
-    }
-  }
-  
-  // 显示结果
-  document.getElementById('intersection-result').innerHTML = 
-    `<strong style="color: #667eea;">共同患者 ID：</strong><span style="font-size: 20px; font-weight: bold; color: #764ba2;">[${intersection.join(', ')}]</span>`;
-  document.getElementById('count-result').innerHTML = 
-    `<strong style="color: #764ba2;">共同患者数量：</strong><span style="font-size: 20px; font-weight: bold; color: #667eea;">${intersection.length}</span>`;
-  
-  // 显示加密细节
-  let hashDetails = '<div style="color: #667eea;"><strong>医院 A 的哈希：</strong></div>';
-  hospitalA.slice(0, 3).forEach((id, i) => {
-    hashDetails += `<div style="margin: 5px 0;">${id} → ${hashedA[i].substring(0, 16)}...</div>`;
-  });
-  hashDetails += '<div style="color: #764ba2; margin-top: 10px;"><strong>医院 B 的哈希：</strong></div>';
-  hospitalB.slice(0, 3).forEach((id, i) => {
-    hashDetails += `<div style="margin: 5px 0;">${id} → ${hashedB[i].substring(0, 16)}...</div>`;
-  });
-  document.getElementById('hash-content').innerHTML = hashDetails;
-  document.getElementById('psi-result').style.display = 'block';
-  
-  // 恢复按钮
-  button.textContent = '🔒 计算隐私交集';
-  button.disabled = false;
-}
-
-// 按钮悬停效果
 if (typeof window !== 'undefined') {
+  // SHA-256 哈希函数
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // 运行 PSI（挂载到全局）
+  window.runPSI = async function() {
+    const button = event.target;
+    button.textContent = '⏳ 计算中...';
+    button.disabled = true;
+    
+    // 获取输入
+    const hospitalAInput = document.getElementById('hospital-a').value;
+    const hospitalBInput = document.getElementById('hospital-b').value;
+    const hospitalA = hospitalAInput.split(',').map(x => x.trim()).filter(x => x);
+    const hospitalB = hospitalBInput.split(',').map(x => x.trim()).filter(x => x);
+    
+    // 模拟加密过程（显示哈希）
+    const hashedA = await Promise.all(hospitalA.map(id => sha256(id)));
+    const hashedB = await Promise.all(hospitalB.map(id => sha256(id)));
+    
+    // 计算交集
+    const intersection = [];
+    const hashMap = new Map();
+    for (let i = 0; i < hospitalA.length; i++) {
+      hashMap.set(hashedA[i], hospitalA[i]);
+    }
+    for (let i = 0; i < hospitalB.length; i++) {
+      if (hashMap.has(hashedB[i])) {
+        intersection.push(hospitalB[i]);
+      }
+    }
+    
+    // 显示结果
+    document.getElementById('intersection-result').innerHTML = 
+      `<strong style="color: #667eea;">共同患者 ID：</strong><span style="font-size: 20px; font-weight: bold; color: #764ba2;">[${intersection.join(', ')}]</span>`;
+    document.getElementById('count-result').innerHTML = 
+      `<strong style="color: #764ba2;">共同患者数量：</strong><span style="font-size: 20px; font-weight: bold; color: #667eea;">${intersection.length}</span>`;
+    
+    // 显示加密细节
+    let hashDetails = '<div style="color: #667eea;"><strong>医院 A 的哈希：</strong></div>';
+    hospitalA.slice(0, 3).forEach((id, i) => {
+      hashDetails += `<div style="margin: 5px 0;">${id} → ${hashedA[i].substring(0, 16)}...</div>`;
+    });
+    hashDetails += '<div style="color: #764ba2; margin-top: 10px;"><strong>医院 B 的哈希：</strong></div>';
+    hospitalB.slice(0, 3).forEach((id, i) => {
+      hashDetails += `<div style="margin: 5px 0;">${id} → ${hashedB[i].substring(0, 16)}...</div>`;
+    });
+    document.getElementById('hash-content').innerHTML = hashDetails;
+    document.getElementById('psi-result').style.display = 'block';
+    
+    // 恢复按钮
+    button.textContent = '🔒 计算隐私交集';
+    button.disabled = false;
+  }
+
+  // 按钮悬停效果
   document.addEventListener('DOMContentLoaded', function() {
     const button = document.querySelector('#psi-demo button');
     if (button) {
