@@ -6,6 +6,7 @@ export default defineUserConfig({
   lang: 'zh-CN',
   title: '隐语交互式拆解站',
   description: '隐私计算技术演示与场景交互',
+  base: '/secretflow-demo/',
   
   bundler: viteBundler(),
   
