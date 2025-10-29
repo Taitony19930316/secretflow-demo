@@ -146,20 +146,22 @@ async function runPSI() {
   button.disabled = false;
 }
 
-// 按钮悬停效果
-document.addEventListener('DOMContentLoaded', function() {
-  const button = document.querySelector('#psi-demo button');
-  if (button) {
-    button.addEventListener('mouseover', function() {
-      this.style.transform = 'translateY(-2px)';
-      this.style.boxShadow = '0 5px 20px rgba(102, 126, 234, 0.4)';
-    });
-    button.addEventListener('mouseout', function() {
-      this.style.transform = 'translateY(0)';
-      this.style.boxShadow = 'none';
-    });
-  }
-});
+// 按钮悬停效果（仅在浏览器环境运行）
+if (typeof window !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', function() {
+    const button = document.querySelector('#psi-demo button');
+    if (button) {
+      button.addEventListener('mouseover', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 5px 20px rgba(102, 126, 234, 0.4)';
+      });
+      button.addEventListener('mouseout', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = 'none';
+      });
+    }
+  });
+}
 </script>
 
 <style>
