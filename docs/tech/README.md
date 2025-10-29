@@ -50,19 +50,21 @@ PSI 允许多方在不泄露各自数据的情况下，计算出数据集的交�
     <button onclick="runPSI()" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">🔒 计算隐私交集</button>
   </div>
   <div id="psi-result" style="display:none; background: white; padding: 20px; border-radius: 8px; margin-top: 15px; animation: fadeIn 0.5s;">
-    <h4 style="color: #667eea; margin-top: 0;">✅ PSI 计算完成</h4>
-    <div id="intersection-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #667eea; margin: 15px 0; border-radius: 4px;"></div>
-    <div id="count-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #764ba2; margin: 15px 0; border-radius: 4px;"></div>
-    <div style="padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; font-size: 14px;">
-      <strong>🔒 隐私保护说明：</strong><br />
+    <h4 style="color: #667eea; margin-top: 0; font-size: 20px;">✅ PSI 计算完成</h4>
+    <div id="intersection-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #667eea; margin: 15px 0; border-radius: 4px; font-size: 16px; color: #333;"></div>
+    <div id="count-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #764ba2; margin: 15px 0; border-radius: 4px; font-size: 16px; color: #333;"></div>
+    <div style="padding: 20px; background: #fff8e1; border-left: 5px solid #ff9800; border-radius: 8px; font-size: 16px; color: #333; line-height: 1.8;">
+      <strong style="font-size: 17px; color: #e65100;">🔒 隐私保护说明：</strong><br />
+      <div style="margin-top: 10px;">
       • 医院 A 不知道医院 B 的完整患者列表<br />
       • 医院 B 不知道医院 A 的完整患者列表<br />
       • 双方只知道交集结果<br />
       • 数据在加密状态下计算
+      </div>
     </div>
-    <div id="hash-details" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px; font-size: 12px; font-family: monospace;">
-      <strong>🔐 加密过程（SHA-256 哈希）：</strong>
-      <div id="hash-content" style="margin-top: 10px; max-height: 200px; overflow-y: auto;"></div>
+    <div id="hash-details" style="margin-top: 15px; padding: 20px; background: #e8f5e9; border-radius: 8px; border-left: 5px solid #4caf50;">
+      <strong style="font-size: 17px; color: #2e7d32;">🔐 加密过程（SHA-256 哈希）：</strong>
+      <div id="hash-content" style="margin-top: 15px; font-size: 15px; color: #333; line-height: 1.8; font-family: 'Courier New', Consolas, monospace; max-height: 300px; overflow-y: auto;"></div>
     </div>
   </div>
 </div>
@@ -112,13 +114,22 @@ if (typeof window !== 'undefined') {
       `<strong style="color: #764ba2;">共同患者数量：</strong><span style="font-size: 20px; font-weight: bold; color: #667eea;">${intersection.length}</span>`;
     
     // 显示加密细节
-    let hashDetails = '<div style="color: #667eea;"><strong>医院 A 的哈希：</strong></div>';
+    let hashDetails = '<div style="color: #2e7d32; font-weight: bold; margin-bottom: 12px; font-size: 16px;">📋 医院 A 的哈希值：</div>';
     hospitalA.slice(0, 3).forEach((id, i) => {
-      hashDetails += `<div style="margin: 5px 0;">${id} → ${hashedA[i].substring(0, 16)}...</div>`;
+      hashDetails += `<div style="margin: 8px 0; padding: 8px; background: #f1f8f4; border-radius: 4px; color: #333; font-size: 14px;">
+        <span style="color: #1976d2; font-weight: bold;">${id}</span> 
+        <span style="color: #666;">→</span> 
+        <span style="color: #388e3c; font-family: monospace;">${hashedA[i].substring(0, 24)}...</span>
+      </div>`;
     });
-    hashDetails += '<div style="color: #764ba2; margin-top: 10px;"><strong>医院 B 的哈希：</strong></div>';
+    
+    hashDetails += '<div style="color: #2e7d32; font-weight: bold; margin-top: 20px; margin-bottom: 12px; font-size: 16px;">📋 医院 B 的哈希值：</div>';
     hospitalB.slice(0, 3).forEach((id, i) => {
-      hashDetails += `<div style="margin: 5px 0;">${id} → ${hashedB[i].substring(0, 16)}...</div>`;
+      hashDetails += `<div style="margin: 8px 0; padding: 8px; background: #f1f8f4; border-radius: 4px; color: #333; font-size: 14px;">
+        <span style="color: #1976d2; font-weight: bold;">${id}</span> 
+        <span style="color: #666;">→</span> 
+        <span style="color: #388e3c; font-family: monospace;">${hashedB[i].substring(0, 24)}...</span>
+      </div>`;
     });
     document.getElementById('hash-content').innerHTML = hashDetails;
     document.getElementById('psi-result').style.display = 'block';
