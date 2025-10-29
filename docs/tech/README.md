@@ -178,7 +178,7 @@ if (typeof window !== 'undefined') {
 想了解真正的 SecretFlow 实现？点击下方按钮在 Google Colab 中查看完整代码：
 
 <div style="text-align: center; margin: 30px 0;">
-  <a href="https://colab.research.google.com/drive/YOUR_COLAB_LINK" target="_blank" style="display: inline-block;">
+  <a href="https://colab.research.google.com/drive/18VPyyAQOlCIQkgvESY97wOYM23oPwLi6?usp=sharing" target="_blank" style="display: inline-block;">
     <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" style="box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 4px;"/>
   </a>
 </div>
