@@ -36,49 +36,38 @@ PSI 允许多方在不泄露各自数据的情况下，计算出数据集的交�
 下方演示可以直接在网页上运行，尝试修改数据看看效果！
 :::
 
+<ClientOnly>
 <div id="psi-demo" style="padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; margin: 30px 0; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
-  <h3 style="color: white; margin-top: 0; font-size: 24px;">🏥 医疗场景 PSI 演示</h3>
-  
-  <div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0;">
-    <div style="margin-bottom: 20px;">
-      <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #667eea;">
-        🏥 医院 A 的患者 ID（逗号分隔）：
-      </label>
-      <input type="text" id="hospital-a" value="1001,1002,1003,1005,1007" 
-             style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #667eea; border-radius: 6px; box-sizing: border-box;" />
-    </div>
-    
-    <div style="margin-bottom: 20px;">
-      <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #764ba2;">
-        🏥 医院 B 的患者 ID（逗号分隔）：
-      </label>
-      <input type="text" id="hospital-b" value="1002,1003,1004,1006,1008" 
-             style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #764ba2; border-radius: 6px; box-sizing: border-box;" />
-    </div>
-    
-    <button onclick="runPSI()" 
-            style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
-      🔒 计算隐私交集
-    </button>
-  </div>
-  
-  <div id="psi-result" style="display:none; background: white; padding: 20px; border-radius: 8px; margin-top: 15px; animation: fadeIn 0.5s;">
-    <h4 style="color: #667eea; margin-top: 0;">✅ PSI 计算完成</h4>
-    <div id="intersection-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #667eea; margin: 15px 0; border-radius: 4px;"></div>
-    <div id="count-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #764ba2; margin: 15px 0; border-radius: 4px;"></div>
-    <div style="padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; font-size: 14px;">
-      <strong>🔒 隐私保护说明：</strong><br>
-      • 医院 A 不知道医院 B 的完整患者列表<br>
-      • 医院 B 不知道医院 A 的完整患者列表<br>
-      • 双方只知道交集结果<br>
-      • 数据在加密状态下计算
-    </div>
-    <div id="hash-details" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px; font-size: 12px; font-family: monospace;">
-      <strong>🔐 加密过程（SHA-256 哈希）：</strong>
-      <div id="hash-content" style="margin-top: 10px; max-height: 200px; overflow-y: auto;"></div>
-    </div>
-  </div>
+<h3 style="color: white; margin-top: 0; font-size: 24px;">🏥 医疗场景 PSI 演示</h3>
+<div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0;">
+<div style="margin-bottom: 20px;">
+<label style="display: block; font-weight: bold; margin-bottom: 8px; color: #667eea;">🏥 医院 A 的患者 ID（逗号分隔）：</label>
+<input type="text" id="hospital-a" value="1001,1002,1003,1005,1007" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #667eea; border-radius: 6px; box-sizing: border-box;" />
 </div>
+<div style="margin-bottom: 20px;">
+<label style="display: block; font-weight: bold; margin-bottom: 8px; color: #764ba2;">🏥 医院 B 的患者 ID（逗号分隔）：</label>
+<input type="text" id="hospital-b" value="1002,1003,1004,1006,1008" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #764ba2; border-radius: 6px; box-sizing: border-box;" />
+</div>
+<button onclick="runPSI()" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">🔒 计算隐私交集</button>
+</div>
+<div id="psi-result" style="display:none; background: white; padding: 20px; border-radius: 8px; margin-top: 15px; animation: fadeIn 0.5s;">
+<h4 style="color: #667eea; margin-top: 0;">✅ PSI 计算完成</h4>
+<div id="intersection-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #667eea; margin: 15px 0; border-radius: 4px;"></div>
+<div id="count-result" style="padding: 15px; background: #f0f4ff; border-left: 4px solid #764ba2; margin: 15px 0; border-radius: 4px;"></div>
+<div style="padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; font-size: 14px;">
+<strong>🔒 隐私保护说明：</strong><br />
+• 医院 A 不知道医院 B 的完整患者列表<br />
+• 医院 B 不知道医院 A 的完整患者列表<br />
+• 双方只知道交集结果<br />
+• 数据在加密状态下计算
+</div>
+<div id="hash-details" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px; font-size: 12px; font-family: monospace;">
+<strong>🔐 加密过程（SHA-256 哈希）：</strong>
+<div id="hash-content" style="margin-top: 10px; max-height: 200px; overflow-y: auto;"></div>
+</div>
+</div>
+</div>
+</ClientOnly>
 
 <script>
 // SHA-256 哈希函数
