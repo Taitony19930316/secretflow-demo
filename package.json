@@ -1,0 +1,16 @@
+{
+  "name": "secretflow-demo",
+  "version": "1.0.0",
+  "description": "隐语交互式拆解站",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "devDependencies": {
+    "@vuepress/bundler-vite": "^2.0.0-rc.26",
+    "@vuepress/theme-default": "^2.0.0-rc.26",
+    "sass-embedded": "^1.93.2",
+    "vuepress": "^2.0.0-rc.26"
+  }
+}
