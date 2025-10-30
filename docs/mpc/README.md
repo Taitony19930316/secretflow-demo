@@ -63,31 +63,38 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 
 #### 步骤1：问题设定
 
-三家银行想知道它们的**平均贷款额度**，但不想暴露各自的具体额度：
-- 银行 A：100万
-- 银行 B：200万
-- 银行 C：300万
+**业务场景**：三家机构需要评估整体市场水平，为行业标准制定、资源分配决策提供依据。
 
-目标：计算平均值 = (100 + 200 + 300) / 3 = 200万
+三家机构想知道它们的**平均业务规模**，用于：
+- 评估自己在行业中的位置（高于/低于平均水平）
+- 为行业标准制定提供参考数据
+- 辅助资源配置和战略规划
+
+但各机构的具体数据属于商业机密，不能直接共享：
+- 机构 A：100万
+- 机构 B：200万
+- 机构 C：300万
+
+**目标**：在不泄露各自真实数据的前提下，计算平均值 = (100 + 200 + 300) / 3 = 200万
 
 #### 步骤2：秘密分享（Secret Sharing）
 
-每家银行将自己的数据**分成多份**，分发给其他银行：
+每家机构将自己的数据**分成多份**，分发给其他机构：
 
 ```
-银行 A (100万) 分成3份：
+机构 A (100万) 分成3份：
   → 发给自己：35
   → 发给 B：   42
   → 发给 C：   23
   （35 + 42 + 23 = 100）
 
-银行 B (200万) 分成3份：
+机构 B (200万) 分成3份：
   → 发给 A：   67
   → 发给自己： 88
   → 发给 C：   45
   （67 + 88 + 45 = 200）
 
-银行 C (300万) 分成3份：
+机构 C (300万) 分成3份：
   → 发给 A：   98
   → 发给 B：   110
   → 发给自己： 92
@@ -98,17 +105,17 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 
 #### 步骤3：本地计算
 
-每家银行对收到的所有分片进行**本地求和**：
+每家机构对收到的所有分片进行**本地求和**：
 
 ```
-银行 A 手里有：35 (自己的) + 67 (B的) + 98 (C的) = 200
-银行 B 手里有：42 (A的) + 88 (自己的) + 110 (C的) = 240
-银行 C 手里有：23 (A的) + 45 (B的) + 92 (自己的) = 160
+机构 A 手里有：35 (自己的) + 67 (B的) + 98 (C的) = 200
+机构 B 手里有：42 (A的) + 88 (自己的) + 110 (C的) = 240
+机构 C 手里有：23 (A的) + 45 (B的) + 92 (自己的) = 160
 ```
 
 #### 步骤4：结果重构
 
-三家银行公开各自的计算结果，相加：
+三家机构公开各自的计算结果，相加：
 
 ```
 200 + 240 + 160 = 600
@@ -119,14 +126,19 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 #### 步骤5：隐私保证
 
 **整个过程中：**
-- ✅ 每家银行只知道自己的原始数据
-- ✅ 看到的其他银行的分片都是随机数
+- ✅ 每家机构只知道自己的原始数据
+- ✅ 看到的其他机构的分片都是随机数
 - ✅ 最终得到了正确的平均值
-- ✅ 无法推断其他银行的真实数据
+- ✅ 无法推断其他机构的真实数据
+
+**业务价值实现：**
+- 机构 A 知道自己（100万）低于平均水平（200万），可考虑扩大规模
+- 机构 B 知道自己刚好在平均水平，保持当前策略
+- 机构 C 知道自己高于平均水平，可输出最佳实践经验
 
 ### 隐私保护的核心
 
-#### 银行 A 的视角
+#### 机构 A 的视角
 
 **我的数据：** 100万
 
@@ -137,11 +149,11 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 - ✅ 最终平均值：200万
 
 **我看不到的：**
-- ❌ 银行 B 的真实数据：200万
-- ❌ 银行 C 的真实数据：300万
-- ❌ 其他银行的其他分片
+- ❌ 机构 B 的真实数据：200万
+- ❌ 机构 C 的真实数据：300万
+- ❌ 其他机构的其他分片
 
-#### 银行 B 的视角
+#### 机构 B 的视角
 
 **我的数据：** 200万
 
@@ -152,14 +164,14 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 - ✅ 最终平均值：200万
 
 **我看不到的：**
-- ❌ 银行 A 的真实数据：100万
-- ❌ 银行 C 的真实数据：300万
+- ❌ 机构 A 的真实数据：100万
+- ❌ 机构 C 的真实数据：300万
 
 ---
 
 ## 在线交互演示
 
-### 🎯 快速体验 MPC 秘密分享
+### 快速体验 MPC 秘密分享
 
 体验 MPC 的核心技术 —— 秘密分享（Secret Sharing），看看如何在不泄露数据的情况下完成联合计算：
 
@@ -198,7 +210,7 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
             style="width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);"
             onmouseover="this.style.transform='translateY(-2px)'"
             onmouseout="this.style.transform='translateY(0)'">
-      🔒 秘密分享 + 联合计算
+      秘密分享 + 联合计算
     </button>
     
     <div id="result" style="margin-top: 30px;"></div>
@@ -206,12 +218,12 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 
 </div>
 
-### 📚 深入学习：完整 SecretFlow MPC 实现
+### 深入学习：完整 SecretFlow MPC 实现
 
 想要体验生产级的 SecretFlow MPC 实现？
 
 <div style="max-width: 800px; margin: 30px auto; padding: 25px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 15px; box-shadow: 0 8px 30px rgba(245, 87, 108, 0.3);">
-  <h4 style="color: white; margin-top: 0; font-size: 1.5em;">🚀 Google Colab 在线演示</h4>
+  <h4 style="color: white; margin-top: 0; font-size: 1.5em;">Google Colab 在线演示</h4>
   <p style="color: white; margin-bottom: 20px; font-size: 1.1em;">
     包含完整的 MPC 秘密分享、联合求和、联合比较等演示，以及可视化展示。
   </p>
@@ -220,10 +232,10 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
      style="display: inline-block; padding: 12px 30px; background: white; color: #f5576c; text-decoration: none; border-radius: 25px; font-weight: bold; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3); font-size: 1.1em;"
      onmouseover="this.style.transform='scale(1.05)'"
      onmouseout="this.style.transform='scale(1)'">
-    ⚡ 打开 Colab 笔记本
+    打开 Colab 笔记本
   </a>
   <p style="color: white; margin-top: 15px; font-size: 0.95em; opacity: 0.9;">
-    💡 提示：点击后会在新标签页打开，可以直接运行代码
+    提示：点击后会在新标签页打开，可以直接运行代码
   </p>
 </div>
 
@@ -317,11 +329,11 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 
 | 特性 | MPC | PSI | 可信第三方 | 明文计算 |
 |------|-----|-----|----------|---------|
-| **隐私保护** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐ |
+| **隐私保护** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ❌ 无隐私 |
 | **计算灵活性** | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | **计算效率** | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| **去中心化** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐ | ⭐⭐⭐ |
-| **适用场景** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
+| **去中心化** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ❌ 中心化 | ⭐⭐⭐ |
+| **合规性** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐ | ❌ 违规风险 |
 
 ### 核心优势
 
@@ -795,7 +807,7 @@ if (typeof window !== 'undefined') {
     // 显示结果
     resultDiv.innerHTML = `
       <div style="background: #f8f9ff; padding: 25px; border-radius: 12px; margin-top: 20px;">
-        <h4 style="color: #667eea; margin-top: 0; font-size: 1.5em;">📊 计算过程可视化</h4>
+        <h4 style="color: #667eea; margin-top: 0; font-size: 1.5em;">计算过程可视化</h4>
         
         <!-- 秘密分享阶段 -->
         <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 5px solid #667eea;">
@@ -864,7 +876,7 @@ if (typeof window !== 'undefined') {
         <!-- 隐私保护说明 -->
         <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 5px solid #ff9800;">
           <div style="font-size: 1.2em; font-weight: bold; color: #e65100; margin-bottom: 10px;">
-            🔒 隐私保护原理
+            隐私保护原理
           </div>
           <ul style="margin: 10px 0; padding-left: 25px; color: #ef6c00; font-size: 1.05em; line-height: 2;">
             <li>✅ 每个份额单独看是<strong>随机数</strong>，看不出原数据</li>
