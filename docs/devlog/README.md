@@ -1,150 +1,111 @@
 # 开发手记
 
-记录开发"隐语交互式拆解站"的过程、遇到的问题及优化建议。
-
-## 开发进度
-
-### Day 1：环境搭建与工具配置
-
-**时间**：2024年X月X日
-
-**完成内容**：
-- ✅ VuePress 项目框架搭建
-- ✅ GitHub、Vercel、CodeSandbox 工具配置
-- ✅ Git 仓库初始化
-- ✅ PSI 代码模板准备
-
-**遇到的问题**：
-1. **问题**：隐语依赖安装时版本冲突
-   - **现象**：`pip install secretflow` 报错
-   - **解决**：使用指定版本 `pip install secretflow==1.9.0`
-   - **教训**：明确指定依赖版本，避免兼容性问题
-
-2. **问题**：VuePress 配置 bundler 选项缺失
-   - **现象**：启动时报错 "The bundler or theme option is missing"
-   - **解决**：安装 `@vuepress/bundler-vite` 并在配置中引入
-   - **教训**：VuePress 2.x 需要显式配置 bundler
-
-### Day 2：技术原理页面开发（计划中）
-
-**计划内容**：
-- [ ] 编写 PSI 原理说明
-- [ ] 绘制技术流程图
-- [ ] 嵌入 CodeSandbox 代码演示
-
-### Day 3：场景交互开发（计划中）
-
-**计划内容**：
-- [ ] 实现医疗场景 3 步交互
-- [ ] 添加模拟数据展示
-- [ ] 集成 PSI 代码运行
-
-### Day 4：部署上线（计划中）
-
-**计划内容**：
-- [ ] 推送代码到 GitHub
-- [ ] 配置 Vercel 自动部署
-- [ ] 生成并测试公开链接
-
-## 技术难点
-
-### 1. CodeSandbox 嵌入调试
-
-**难点描述**：将 CodeSandbox 嵌入 VuePress 后，iframe 样式可能错位。
-
-**预期解决方案**：
-- 调整 iframe 宽度为 100%
-- 设置固定高度（如 500px）
-- 添加边框圆角和阴影美化
-
-**代码示例**：
-```html
-<iframe 
-  src="https://codesandbox.io/embed/xxx"
-  style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
-  sandbox="allow-scripts allow-same-origin"
-></iframe>
-```
-
-### 2. 隐语多节点配置
-
-**难点描述**：真实的 PSI 需要多节点环境，CodeSandbox 是单节点。
-
-**解决方案**：
-- 在 CodeSandbox 中使用简化版演示（模拟逻辑）
-- 提供完整代码示例供本地测试
-- 说明真实环境的配置要求
-
-## 对隐语的优化建议
-
-### 建议 1：优化新手文档
-
-**问题**：
-- PSI 代码示例注释较少
-- 新手难以理解参数含义
-
-**建议**：
-- 在社区文档中增加"新手版注释"
-- 对每个参数添加说明和取值范围
-- 提供更多场景化的代码示例
-
-**示例**：
-```python
-# ❌ 当前文档
-result = psi(data_a, data_b)
-
-# ✅ 建议改进
-result = psi(
-    data_a,      # 参与方A的数据（List或DataFrame）
-    data_b,      # 参与方B的数据
-    protocol='ecdh'  # 协议类型：ecdh(快速) 或 kkrt(大数据)
-)
-```
-
-### 建议 2：SecretPad 增加进度提示
-
-**问题**：
-- 执行 PSI 计算时无进度条
-- 用户不知道是在计算还是卡死
-
-**建议**：
-- 添加文字提示："计算中，请稍候..."
-- 显示预估剩余时间
-- 增加进度百分比
-
-## 开发心得
-
-### 1. 极简主义很重要
-- 使用现成工具（VuePress、CodeSandbox）节省大量时间
-- 不做自定义开发，专注于内容和演示
-
-### 2. 边做边记录
-- 记录每个问题的解决方案
-- 形成可复用的开发文档
-
-### 3. 用户视角思考
-- 不只是展示技术，要让用户能"体验"
-- 交互式演示比静态说明更有说服力
-
-## 时间统计
-
-| 任务 | 预计时间 | 实际时间 | 备注 |
-|------|---------|---------|------|
-| 工具配置 | 1h | 1h | 顺利 |
-| VuePress 搭建 | 2h | 2.5h | 遇到 bundler 配置问题 |
-| PSI 代码准备 | 2h | - | 进行中 |
-
-## 下一步计划
-
-1. ✅ 完成基础页面框架
-2. 📝 收集隐语官方 PSI 示例代码
-3. 🎨 优化页面样式和交互
-4. 🚀 准备部署到 Vercel
+记录开发过程中的技术探索、问题解决和经验总结。
 
 ---
 
-**总耗时（Day 1）**：约 4 小时  
-**状态**：进展顺利，按计划推进
+## 📚 技术原理
 
-*本手记将持续更新，记录完整的开发过程。*
+深入理解项目中涉及的核心技术概念：
 
+- [PSI密码学技术详解](./tech-principles/PSI密码学技术详解.md) - ECC、OT协议、加盐随机化
+- [SSR原理详解](./tech-principles/💡SSR原理详解.md) - 服务端渲染与客户端渲染
+- [从域名到文件的完整链路](./tech-principles/从域名到文件的完整链路.md) - DNS、服务器、构建流程
+- [什么是部署](./tech-principles/什么是部署-完整解释.md) - 部署的本质和流程
+- [为什么不用SecretFlow也能运行PSI](./tech-principles/为什么不用SecretFlow也能运行PSI.md) - 简化版vs生产版
+- [在网页端演示PSI的方案](./tech-principles/在网页端演示PSI的方案.md) - JavaScript实现思路
+
+---
+
+## 🚀 部署指南
+
+多平台部署方案和配置说明：
+
+- [Gitee部署指南（国内访问）](./deployment/🚀Gitee部署指南-国内访问.md) - Gitee Pages 完整部署流程
+- [Cloudflare Pages部署](./deployment/🌐Cloudflare-Pages部署-替代方案.md) - 国内友好的替代方案
+- [Colab部署指南](./deployment/Colab部署指南.md) - Google Colab 笔记本配置
+- [GitHub Pages域名规则](./deployment/GitHub-Pages域名规则和自定义域名.md) - 域名生成和自定义
+
+---
+
+## 🔧 问题解决
+
+开发过程中遇到的问题和解决方案：
+
+- [HTML显示问题修复](./troubleshooting/🔧HTML显示问题修复完成.md) - ClientOnly标签问题
+- [交互按钮修复](./troubleshooting/🎉交互按钮最终修复.md) - 全局函数挂载
+- [导航结构优化](./troubleshooting/📐导航结构优化完成.md) - 2tab + 侧边栏
+- [显示效果优化](./troubleshooting/✨显示效果优化完成.md) - 字体、颜色、对比度
+- [Colab运行故障排查](./troubleshooting/Colab运行故障排查.md) - 代码单元vs文本单元
+- [Colab正确操作指南](./troubleshooting/Colab正确操作指南.md) - 使用技巧
+
+---
+
+## 📊 开发总结
+
+项目进展和阶段性总结：
+
+- [Day1-2完成总结](./summary/🎉Day1-2完成总结.md) - 前两天的完成情况和经验
+- [Day1进度记录](./summary/Day1-进度记录.md) - 第一天详细记录
+- [7天攻坚计划](./summary/📋新7天攻坚计划-打造完整隐语平台.md) - 完整的7天规划
+
+---
+
+## 🎯 核心经验
+
+### 技术栈选择
+
+- **前端框架**: VuePress 2.x + Vite
+- **交互演示**: 原生 JavaScript + Web Crypto API
+- **部署平台**: GitHub Pages + Gitee Pages + Cloudflare Pages
+- **代码演示**: Google Colab
+
+### 关键技术点
+
+1. **SSR兼容性**
+   - 使用 `typeof window !== 'undefined'` 检查
+   - 避免在服务端渲染时访问浏览器API
+
+2. **交互实现**
+   - 全局函数挂载：`window.functionName = ...`
+   - 事件监听：`DOMContentLoaded` 确保DOM加载完成
+
+3. **部署优化**
+   - 多平台部署覆盖不同地区用户
+   - GitHub Actions 自动化CI/CD
+   - 手动部署作为备用方案
+
+### 开发流程
+
+```
+需求分析 → 技术选型 → 本地开发 → 测试验证 → 
+部署上线 → 问题修复 → 优化迭代
+```
+
+### 文档组织
+
+- **场景驱动**: 从痛点出发
+- **层次递进**: 从浅入深
+- **交互优先**: 动手体验
+- **完整闭环**: 理论+实践+资源
+
+---
+
+## 📝 更新日志
+
+### 2025-10-30
+- ✅ 整合页面结构，简化导航
+- ✅ 扩展应用场景说明
+- ✅ 优化技术原理表述
+- ✅ 完善部署文档
+
+### 2025-10-29
+- ✅ 完成PSI交互式演示
+- ✅ 实现SHA-256加密可视化
+- ✅ 集成Google Colab笔记本
+- ✅ 解决SSR兼容性问题
+- ✅ 多平台部署上线
+
+---
+
+> 💡 **提示**: 这些文档记录了项目从0到1的完整过程，包括技术决策、问题解决和经验总结，希望对你有帮助！
