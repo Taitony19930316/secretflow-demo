@@ -259,32 +259,23 @@ if (typeof window !== 'undefined') {
 
 上方演示使用 Web Crypto API 实现了简化版 PSI，展示了核心原理。
 
-<div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 16px; padding: 30px; margin: 40px 0; box-shadow: 0 10px 40px rgba(245, 87, 108, 0.3); position: relative; overflow: hidden;">
-  <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-  <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-  <div style="position: relative; z-index: 1;">
-    <h3 style="color: white; margin-top: 0; font-size: 24px; text-align: center; margin-bottom: 15px;">体验真实的 SecretFlow PSI</h3>
-    <p style="color: rgba(255,255,255,0.95); text-align: center; font-size: 16px; margin-bottom: 25px; line-height: 1.6;">在 Google Colab 中运行完整的 SecretFlow 代码<br />包含 ECDH-PSI 协议和 OT 实现</p>
-    <div style="text-align: center;">
-      <a href="https://colab.research.google.com/drive/18VPyyAQOlCIQkgvESY97wOYM23oPwLi6?usp=sharing" target="_blank" style="display: inline-block; background: white; color: #f5576c; padding: 15px 40px; border-radius: 50px; font-weight: bold; font-size: 18px; text-decoration: none; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: all 0.3s ease; border: 3px solid white;" onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';">
-        📒 打开 Colab 笔记本 →
-      </a>
-    </div>
-    <div style="margin-top: 25px; display: flex; justify-content: space-around; flex-wrap: wrap;">
-      <div style="text-align: center; color: white; margin: 10px;">
-        <div style="font-size: 28px; font-weight: bold;">40</div>
-        <div style="font-size: 14px; opacity: 0.9;">行精简代码</div>
-      </div>
-      <div style="text-align: center; color: white; margin: 10px;">
-        <div style="font-size: 28px; font-weight: bold;">ECDH</div>
-        <div style="font-size: 14px; opacity: 0.9;">PSI 协议</div>
-      </div>
-      <div style="text-align: center; color: white; margin: 10px;">
-        <div style="font-size: 28px; font-weight: bold;">0</div>
-        <div style="font-size: 14px; opacity: 0.9;">环境配置</div>
-      </div>
-    </div>
-  </div>
+**运行方式：**
+
+<div style="background: #f5f7fa; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea;">
+
+**🐳 Docker 运行（推荐）**
+
+```bash
+# 下载代码
+curl -O https://paopaotai.github.io/secretflow-demo/psi-secretflow-final.py
+
+# 运行演示
+docker run --rm -v $(pwd):/work secretflow/secretflow-lite-anolis8:latest \
+  python3 /work/psi-secretflow-final.py
+```
+
+**📥 或者：**[下载代码](../../psi-secretflow-final.py) 后在本地 Python 3.8+ 环境运行
+
 </div>
 
 #### 代码示例

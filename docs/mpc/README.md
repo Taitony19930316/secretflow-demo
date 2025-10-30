@@ -197,25 +197,25 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 <div id="mpc-result" style="margin-top: 15px;"></div>
 </div>
 
-### 深入学习：完整 SecretFlow MPC 实现
+### 深入学习：真实的 SecretFlow MPC
 
-想要体验生产级的 SecretFlow MPC 实现？
+**运行方式：**
 
-<div style="max-width: 800px; margin: 30px auto; padding: 25px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 15px; box-shadow: 0 8px 30px rgba(245, 87, 108, 0.3);">
-  <h4 style="color: white; margin-top: 0; font-size: 1.5em;">Google Colab 在线演示</h4>
-  <p style="color: white; margin-bottom: 20px; font-size: 1.1em;">
-    包含完整的 MPC 秘密分享、联合求和、联合比较等演示，以及可视化展示。
-  </p>
-  <a href="#" 
-     target="_blank"
-     style="display: inline-block; padding: 12px 30px; background: white; color: #f5576c; text-decoration: none; border-radius: 25px; font-weight: bold; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3); font-size: 1.1em;"
-     onmouseover="this.style.transform='scale(1.05)'"
-     onmouseout="this.style.transform='scale(1)'">
-    打开 Colab 笔记本
-  </a>
-  <p style="color: white; margin-top: 15px; font-size: 0.95em; opacity: 0.9;">
-    提示：点击后会在新标签页打开，可以直接运行代码
-  </p>
+<div style="background: #f5f7fa; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea;">
+
+**🐳 Docker 运行（推荐）**
+
+```bash
+# 下载代码
+curl -O https://paopaotai.github.io/secretflow-demo/mpc-secretflow-final.py
+
+# 运行演示
+docker run --rm -v $(pwd):/work secretflow/secretflow-lite-anolis8:latest \
+  python3 /work/mpc-secretflow-final.py
+```
+
+**📥 或者：**[下载代码](../../mpc-secretflow-final.py) 后在本地 Python 3.8+ 环境运行
+
 </div>
 
 #### 代码示例
