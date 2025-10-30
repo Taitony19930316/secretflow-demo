@@ -1,7 +1,0 @@
-# CodeSandbox Python环境依赖
-# 隐语SecretFlow依赖（如果可用）
-secretflow>=1.9.0
-
-# 基础依赖
-numpy>=1.21.0
-
