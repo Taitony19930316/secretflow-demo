@@ -4,7 +4,7 @@ import { viteBundler } from '@vuepress/bundler-vite'
 
 export default defineUserConfig({
   lang: 'zh-CN',
-  title: '隐语交互式拆解站',
+  title: 'SecretFlow',
   description: '隐私计算技术演示与场景交互',
   base: '/secretflow-demo/',
   
