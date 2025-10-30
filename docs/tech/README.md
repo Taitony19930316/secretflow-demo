@@ -289,6 +289,8 @@ if (typeof window !== 'undefined') {
 
 #### 代码示例
 
+<div style="max-height: 400px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
+
 ```python
 # SecretFlow PSI 演示
 # 安装：!pip install -U secretflow
@@ -330,6 +332,8 @@ print(f"前5个交集: {list(result_df['patient_id'].head())}")
 
 sf.shutdown()
 ```
+
+</div>
 
 #### 运行结果
 

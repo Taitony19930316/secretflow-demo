@@ -220,6 +220,8 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 
 #### 代码示例
 
+<div style="max-height: 400px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px;">
+
 ```python
 # SecretFlow MPC 演示
 # 安装：!pip install -U secretflow
@@ -263,6 +265,8 @@ print(f"隐私保护: 各方原始评分不泄露")
 
 sf.shutdown()
 ```
+
+</div>
 
 #### 运行结果
 
