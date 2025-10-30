@@ -171,51 +171,30 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 
 ## 在线交互演示
 
-### 快速体验 MPC 秘密分享
+::: tip 操作提示
+下方演示可以直接在网页上运行，尝试修改数据看看效果！
+:::
 
-体验 MPC 的核心技术 —— 秘密分享（Secret Sharing），看看如何在不泄露数据的情况下完成联合计算：
-
-<div id="demo-container" style="max-width: 900px; margin: 30px auto; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);">
-  
-  <div style="background: white; border-radius: 15px; padding: 30px;">
-    <h3 style="text-align: center; color: #333; font-size: 1.8em; margin-bottom: 30px;">
-      MPC 秘密分享演示
-    </h3>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 25px;">
-      <div>
-        <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #555; font-size: 1.1em;">
-          参与方 A 的数据：
-        </label>
-        <input type="number" id="dataA" value="100" 
-               style="width: 100%; padding: 12px; border: 2px solid #667eea; border-radius: 8px; font-size: 1em;">
-      </div>
-      <div>
-        <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #555; font-size: 1.1em;">
-          参与方 B 的数据：
-        </label>
-        <input type="number" id="dataB" value="200" 
-               style="width: 100%; padding: 12px; border: 2px solid #764ba2; border-radius: 8px; font-size: 1em;">
-      </div>
-      <div>
-        <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #555; font-size: 1.1em;">
-          参与方 C 的数据：
-        </label>
-        <input type="number" id="dataC" value="300" 
-               style="width: 100%; padding: 12px; border: 2px solid #f093fb; border-radius: 8px; font-size: 1em;">
-      </div>
-    </div>
-    
-    <button onclick="runMPC()" 
-            style="width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);"
-            onmouseover="this.style.transform='translateY(-2px)'"
-            onmouseout="this.style.transform='translateY(0)'">
-      秘密分享 + 联合计算
-    </button>
-    
-    <div id="result" style="margin-top: 30px;"></div>
-  </div>
-
+<div id="mpc-demo" style="padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; margin: 30px 0; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+<h3 style="color: white; margin-top: 0; font-size: 24px;">MPC 秘密分享演示</h3>
+<div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0;">
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+<div>
+<label style="display: block; font-weight: bold; margin-bottom: 8px; color: #667eea;">参与方 A 的数据：</label>
+<input type="number" id="dataA" value="100" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #667eea; border-radius: 6px; box-sizing: border-box;" />
+</div>
+<div>
+<label style="display: block; font-weight: bold; margin-bottom: 8px; color: #764ba2;">参与方 B 的数据：</label>
+<input type="number" id="dataB" value="200" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #764ba2; border-radius: 6px; box-sizing: border-box;" />
+</div>
+<div>
+<label style="display: block; font-weight: bold; margin-bottom: 8px; color: #f093fb;">参与方 C 的数据：</label>
+<input type="number" id="dataC" value="300" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #f093fb; border-radius: 6px; box-sizing: border-box;" />
+</div>
+</div>
+<button onclick="runMPC()" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">秘密分享 + 联合计算</button>
+</div>
+<div id="mpc-result" style="margin-top: 15px;"></div>
 </div>
 
 ### 深入学习：完整 SecretFlow MPC 实现
@@ -764,20 +743,17 @@ Beaver 三元组
 <script>
 if (typeof window !== 'undefined') {
   window.runMPC = async function() {
+    const button = event.target;
+    button.textContent = '计算中...';
+    button.disabled = true;
+    
     const dataA = parseFloat(document.getElementById('dataA').value) || 100;
     const dataB = parseFloat(document.getElementById('dataB').value) || 200;
     const dataC = parseFloat(document.getElementById('dataC').value) || 300;
-    const resultDiv = document.getElementById('result');
-    
-    // 显示加载状态
-    resultDiv.innerHTML = `
-      <div style="text-align: center; padding: 30px; font-size: 1.2em; color: #666;">
-        🔄 正在进行秘密分享和联合计算...
-      </div>
-    `;
+    const resultDiv = document.getElementById('mpc-result');
     
     // 模拟计算延迟
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 800));
     
     // 秘密分享（简化版：加法秘密分享）
     // 参与方 A 分享
@@ -804,99 +780,61 @@ if (typeof window !== 'undefined') {
     const total = sum1 + sum2 + sum3;
     const average = (total / 3).toFixed(2);
     
-    // 显示结果
-    resultDiv.innerHTML = `
-      <div style="background: #f8f9ff; padding: 25px; border-radius: 12px; margin-top: 20px;">
-        <h4 style="color: #667eea; margin-top: 0; font-size: 1.5em;">计算过程可视化</h4>
-        
-        <!-- 秘密分享阶段 -->
-        <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 5px solid #667eea;">
-          <div style="font-size: 1.2em; font-weight: bold; color: #667eea; margin-bottom: 15px;">
-            步骤1：秘密分享
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; font-size: 1em;">
-            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
-              <div style="font-weight: bold; color: #1976d2; margin-bottom: 8px;">参与方 A (${dataA})</div>
-              <div style="color: #555;">份额1: ${a1}</div>
-              <div style="color: #555;">份额2: ${a2}</div>
-              <div style="color: #555;">份额3: ${a3}</div>
-            </div>
-            <div style="background: #f3e5f5; padding: 15px; border-radius: 8px;">
-              <div style="font-weight: bold; color: #7b1fa2; margin-bottom: 8px;">参与方 B (${dataB})</div>
-              <div style="color: #555;">份额1: ${b1}</div>
-              <div style="color: #555;">份额2: ${b2}</div>
-              <div style="color: #555;">份额3: ${b3}</div>
-            </div>
-            <div style="background: #fce4ec; padding: 15px; border-radius: 8px;">
-              <div style="font-weight: bold; color: #c2185b; margin-bottom: 8px;">参与方 C (${dataC})</div>
-              <div style="color: #555;">份额1: ${c1}</div>
-              <div style="color: #555;">份额2: ${c2}</div>
-              <div style="color: #555;">份额3: ${c3}</div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 本地计算阶段 -->
-        <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 5px solid #764ba2;">
-          <div style="font-size: 1.2em; font-weight: bold; color: #764ba2; margin-bottom: 15px;">
-            步骤2：各方本地求和
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; font-size: 1em;">
-            <div style="background: #e1f5fe; padding: 15px; border-radius: 8px;">
-              <div style="font-weight: bold; color: #01579b; margin-bottom: 8px;">A 手里的份额</div>
-              <div style="color: #555;">a₁(${a1}) + b₁(${b1}) + c₁(${c1})</div>
-              <div style="font-size: 1.3em; font-weight: bold; color: #01579b; margin-top: 10px;">= ${sum1}</div>
-            </div>
-            <div style="background: #f1f8e9; padding: 15px; border-radius: 8px;">
-              <div style="font-weight: bold; color: #33691e; margin-bottom: 8px;">B 手里的份额</div>
-              <div style="color: #555;">a₂(${a2}) + b₂(${b2}) + c₂(${c2})</div>
-              <div style="font-size: 1.3em; font-weight: bold; color: #33691e; margin-top: 10px;">= ${sum2}</div>
-            </div>
-            <div style="background: #fff3e0; padding: 15px; border-radius: 8px;">
-              <div style="font-weight: bold; color: #e65100; margin-bottom: 8px;">C 手里的份额</div>
-              <div style="color: #555;">a₃(${a3}) + b₃(${b3}) + c₃(${c3})</div>
-              <div style="font-size: 1.3em; font-weight: bold; color: #e65100; margin-top: 10px;">= ${sum3}</div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 最终结果 -->
-        <div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 20px; border-radius: 10px; margin: 15px 0; border: 2px solid #4caf50;">
-          <div style="font-size: 1.3em; font-weight: bold; color: #2e7d32; margin-bottom: 10px;">
-            ✅ 步骤3：重构最终结果
-          </div>
-          <div style="font-size: 1.1em; color: #1b5e20; margin-bottom: 15px;">
-            ${sum1} + ${sum2} + ${sum3} = <span style="font-size: 1.5em; font-weight: bold;">${total}</span>
-          </div>
-          <div style="font-size: 1.3em; color: #1b5e20; font-weight: bold;">
-            平均值 = ${total} ÷ 3 = <span style="font-size: 1.5em; color: #4caf50;">${average}</span>
-          </div>
-        </div>
-        
-        <!-- 隐私保护说明 -->
-        <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin: 15px 0; border-left: 5px solid #ff9800;">
-          <div style="font-size: 1.2em; font-weight: bold; color: #e65100; margin-bottom: 10px;">
-            隐私保护原理
-          </div>
-          <ul style="margin: 10px 0; padding-left: 25px; color: #ef6c00; font-size: 1.05em; line-height: 2;">
-            <li>✅ 每个份额单独看是<strong>随机数</strong>，看不出原数据</li>
-            <li>✅ 各方只看到<strong>其他方的份额</strong>，无法推断真实值</li>
-            <li>✅ 只有<strong>汇总后</strong>才能得到正确结果</li>
-            <li>✅ 整个过程<strong>信息论安全</strong>，即使计算能力无限也无法破解</li>
-          </ul>
-        </div>
-      </div>
-    `;
+    // 构建结果HTML
+    let html = '<div style="background: white; padding: 20px; border-radius: 8px;">';
+    html += '<h4 style="color: #667eea; margin-top: 0; font-size: 20px;">MPC 计算完成</h4>';
+    
+    // 秘密分享阶段
+    html += '<div style="padding: 15px; background: #f0f4ff; border-left: 4px solid #667eea; margin: 15px 0; border-radius: 4px;">';
+    html += '<strong style="font-size: 17px; color: #667eea;">步骤1：秘密分享</strong><br/>';
+    html += '<div style="margin-top: 10px; font-size: 15px;">';
+    html += '参与方 A (' + dataA + ') → 份额: [' + a1 + ', ' + a2 + ', ' + a3 + ']<br/>';
+    html += '参与方 B (' + dataB + ') → 份额: [' + b1 + ', ' + b2 + ', ' + b3 + ']<br/>';
+    html += '参与方 C (' + dataC + ') → 份额: [' + c1 + ', ' + c2 + ', ' + c3 + ']';
+    html += '</div></div>';
+    
+    // 本地计算阶段
+    html += '<div style="padding: 15px; background: #f0f4ff; border-left: 4px solid #764ba2; margin: 15px 0; border-radius: 4px;">';
+    html += '<strong style="font-size: 17px; color: #764ba2;">步骤2：各方本地求和</strong><br/>';
+    html += '<div style="margin-top: 10px; font-size: 15px;">';
+    html += 'A 手里: ' + a1 + ' + ' + b1 + ' + ' + c1 + ' = ' + sum1 + '<br/>';
+    html += 'B 手里: ' + a2 + ' + ' + b2 + ' + ' + c2 + ' = ' + sum2 + '<br/>';
+    html += 'C 手里: ' + a3 + ' + ' + b3 + ' + ' + c3 + ' = ' + sum3;
+    html += '</div></div>';
+    
+    // 最终结果
+    html += '<div style="padding: 20px; background: #e8f5e9; border-left: 5px solid #4caf50; margin: 15px 0; border-radius: 8px;">';
+    html += '<strong style="font-size: 18px; color: #2e7d32;">步骤3：重构最终结果</strong><br/>';
+    html += '<div style="margin-top: 15px; font-size: 17px; color: #1b5e20;">';
+    html += sum1 + ' + ' + sum2 + ' + ' + sum3 + ' = <strong style="font-size: 22px; color: #4caf50;">' + total + '</strong><br/>';
+    html += '平均值 = ' + total + ' ÷ 3 = <strong style="font-size: 24px; color: #4caf50;">' + average + '</strong>';
+    html += '</div></div>';
+    
+    // 隐私保护说明
+    html += '<div style="padding: 20px; background: #fff8e1; border-left: 5px solid #ff9800; border-radius: 8px; margin-top: 15px;">';
+    html += '<strong style="font-size: 17px; color: #e65100;">隐私保护原理</strong><br/>';
+    html += '<div style="margin-top: 10px; font-size: 15px; line-height: 1.8; color: #333;">';
+    html += '• 每个份额单独看是随机数，看不出原数据<br/>';
+    html += '• 各方只看到其他方的份额，无法推断真实值<br/>';
+    html += '• 只有汇总后才能得到正确结果<br/>';
+    html += '• 整个过程信息论安全，即使计算能力无限也无法破解';
+    html += '</div></div>';
+    
+    html += '</div>';
+    resultDiv.innerHTML = html;
+    
+    button.textContent = '秘密分享 + 联合计算';
+    button.disabled = false;
   };
 }
 </script>
 
 <style>
-#demo-container button:active {
+#mpc-demo button:active {
   transform: translateY(1px) !important;
 }
 
-#demo-container input:focus {
+#mpc-demo input:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
 }
