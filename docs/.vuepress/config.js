@@ -13,10 +13,12 @@ export default defineUserConfig({
   theme: defaultTheme({
     navbar: [
       { text: 'PSI', link: '/tech/' },
+      { text: 'MPC', link: '/mpc/' },
       { text: '开发手记', link: '/devlog/' }
     ],
     sidebar: {
       '/tech/': [],
+      '/mpc/': [],
       '/devlog/': [
         {
           text: '开发手记',
