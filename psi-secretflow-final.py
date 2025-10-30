@@ -1,5 +1,6 @@
 # SecretFlow PSI 演示
-# 安装：!pip install -U secretflow
+# 第一步：安装 SecretFlow（首次运行需要几分钟）
+!pip install -q -U secretflow
 
 import secretflow as sf
 import pandas as pd
@@ -8,7 +9,7 @@ import pandas as pd
 sf.init(['alice', 'bob'], address='local', num_cpus=2, log_to_driver=False)
 alice, bob = sf.PYU('alice'), sf.PYU('bob')
 
-# 准备数据：两家医院的患者ID
+# 准备数据：两家医院![1761816913381](image/psi-secretflow-final/1761816913381.png)![1761816922145](image/psi-secretflow-final/1761816922145.png)![1761816923633](image/psi-secretflow-final/1761816923633.png)的患者ID
 alice_data = pd.DataFrame({'patient_id': [f'P{i:04d}' for i in range(1, 501)]})
 bob_data = pd.DataFrame({'patient_id': [f'P{i:04d}' for i in range(351, 951)]})
 

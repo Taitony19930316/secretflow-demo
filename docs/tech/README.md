@@ -293,7 +293,8 @@ if (typeof window !== 'undefined') {
 
 ```python
 # SecretFlow PSI 演示
-# 安装：!pip install -U secretflow
+# 第一步：安装 SecretFlow（首次运行需要几分钟）
+!pip install -q -U secretflow
 
 import secretflow as sf
 import pandas as pd

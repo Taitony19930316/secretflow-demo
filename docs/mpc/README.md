@@ -224,7 +224,8 @@ MPC（Multi-Party Computation，多方安全计算）允许多方在**不泄露�
 
 ```python
 # SecretFlow MPC 演示
-# 安装：!pip install -U secretflow
+# 第一步：安装 SecretFlow（首次运行需要几分钟）
+!pip install -q -U secretflow
 
 import secretflow as sf
 import numpy as np
