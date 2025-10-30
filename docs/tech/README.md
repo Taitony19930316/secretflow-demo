@@ -1,4 +1,4 @@
-# PSI 隐私求交技术
+# PSI
 
 > Private Set Intersection - 让数据在隐私保护下产生价值
 

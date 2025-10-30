@@ -16,18 +16,7 @@ export default defineUserConfig({
       { text: '开发手记', link: '/devlog/' }
     ],
     sidebar: {
-      '/tech/': [
-        {
-          text: 'PSI 隐私求交',
-          collapsible: false,
-          children: [
-            {
-              text: '完整演示',
-              link: '/tech/'
-            }
-          ]
-        }
-      ],
+      '/tech/': [],
       '/devlog/': [
         {
           text: '开发手记',
